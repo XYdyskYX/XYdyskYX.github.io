@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XY希阳 个人主页</title>
+    <style>
+        @font-face {
+            font-family: "XQBDDZRJ";
+            src: url("font/XQBDDZRJ.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "XQBDDZRJ", "Microsoft Yahei", cursive;
+        }
+
+        /* 全局页面背景：铺满全屏、固定不滚动 */
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background: #ff7fb3;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ========== 左侧侧边栏音乐按钮 ========== */
+        .music-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 998;
+            display: grid;
+            place-items: center;
+            backdrop-filter: blur(3px);
+            transition: 0.25s;
+        }
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.08);
+        }
+
+        /* ========== 最左侧垂直导航栏（固定全屏靠左） ========== */
+        .left-nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding: 48px 16px;
+            align-items: center;
+            z-index: 997;
+            background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
+            backdrop-filter: blur(8px);
+            border-right: 1px solid rgba(255,255,255,0.25);
+            transition: width 0.25s ease, padding 0.25s ease;
+        }
+        .nav-circle-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            color: #ffffff;
+            font-size: 22px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(3px);
+            transition: 0.25s;
+            text-decoration: none;
+            position: relative;
+        }
+        .nav-circle-btn .nav-label {
+            display: none;
+        }
+        .nav-circle-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.08);
+        }
+        .nav-circle-btn.active {
+            background: rgba(255, 255, 255, 0.45);
+            box-shadow: 0 0 14px rgba(255,255,255,0.4);
+        }
+
+        /* ========== 左侧个人信息悬浮卡片 ========== */
+        .profile-card-wrap {
+            position: fixed;
+            left: 95px;
+            top: 72px;
+            width: 225px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(245,247,255,0.82));
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 24px 18px;
+            border: 1px solid rgba(220, 220, 220, 0.7);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+            z-index: 996;
+        }
+
+        @media (max-width: 900px) {
+            body.mobile-layout {
+                padding-top: 0;
+            }
+            .mobile-layout .left-nav {
+                width: 72px;
+                padding: 14px 8px;
+                gap: 14px;
+                height: 100vh;
+                max-height: none;
+                overflow-y: auto;
+                top: 0;
+                bottom: 0;
+                left: -30px;
+                transform: translateX(-100%);
+                transition: transform 0.25s ease;
+            }
+            .mobile-layout .left-nav.expanded {
+                width: 72px;
+                padding: 14px 8px;
+                left: 0;
+                transform: translateX(0);
+            }
+            .mobile-layout .nav-circle-btn {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                justify-content: center;
+                gap: 0;
+                font-size: 18px;
+            }
+            .mobile-layout .left-nav.expanded .nav-circle-btn {
+                width: 56px;
+                justify-content: center;
+                gap: 0;
+                padding: 0;
+                border-radius: 12px;
+            }
+            .mobile-layout .nav-circle-btn .nav-label {
+                display: none;
+                font-size: 12px;
+                color: #fff;
+                white-space: nowrap;
+            }
+            .mobile-layout .left-nav.expanded .nav-circle-btn .nav-label {
+                display: inline-block;
+            }
+            .mobile-layout .profile-card-wrap {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin: 10px 0 14px;
+                width: 100%;
+                max-width: none;
+                padding: 16px 14px;
+                transform: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+            }
+            .mobile-layout .profile-avatar {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 8px;
+            }
+            .mobile-layout .profile-name {
+                font-size: 18px;
+                margin-bottom: 6px;
+            }
+            .mobile-layout .profile-desc {
+                font-size: 12px;
+                line-height: 1.45;
+                margin-bottom: 10px;
+            }
+            .mobile-layout .social-row {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .mobile-layout .social-icon {
+                width: 30px;
+                height: 30px;
+            }
+            .mobile-layout .social-icon img {
+                width: 15px;
+                height: 15px;
+            }
+            .mobile-layout .main-container {
+                margin-left: 0;
+                padding: 0 12px 90px;
+                max-width: none;
+            }
+            .mobile-layout .page-section {
+                display: block;
+                margin-bottom: 14px;
+            }
+            .mobile-layout .page-section.active {
+                display: block;
+            }
+            .mobile-layout .page-tip {
+                right: 8px;
+                bottom: 8px;
+                font-size: 11px;
+                padding: 7px 10px;
+            }
+        }
+        .profile-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 12px;
+            border: 2px solid #eee;
+        }
+        .profile-name {
+            text-align: center;
+            font-size: 24px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        .profile-desc {
+            font-size: 13px;
+            line-height: 1.65;
+            color: #333;
+            margin-bottom: 16px;
+        }
+        .social-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .social-icon img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+        .social-icon:hover {
+            background: #e9e9e9;
+            box-shadow: 0 0 8px rgba(0,0,0,0.12);
+        }
+
+        /* ========== 右侧主内容区域 ========== */
+        .main-container {
+            margin-left: 320px;
+            padding: 80px 40px;
+            max-width: 720px;
+        }
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        /* 通用内容板块样式 */
+        .content-block {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(6px);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(230,230,230,0.7);
+        }
+        .block-title {
+            font-size: 18px;
+            color: #2c2c2c;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #ddd;
+        }
+        .timeline-text {
+            line-height: 1.8;
+            font-size: 14px;
+            color: #333;
+        }
+        .link-btn {
+            display: block;
+            text-align: center;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(180, 200, 255, 0.35);
+            border: 1px solid #a0b8ff;
+            color: #254799;
+            text-decoration: none;
+            margin-top: 8px;
+            transition: 0.25s;
+        }
+        .link-btn:hover {
+            background: rgba(180, 200, 255, 0.55);
+            box-shadow: 0 0 10px rgba(160,184,255,0.3);
+        }
+
+        /* 打赏卡片 */
+        .donate-card {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            overflow: hidden;
+            max-width: 440px;
+        }
+        .donate-qr {
+            padding: 24px;
+            text-align: center;
+        }
+        .donate-qr img {
+            width: 72%;
+            border-radius: 10px;
+        }
+        .donate-text {
+            padding: 8px 0;
+            font-size: 15px;
+            color: #c83b66;
+        }
+        .donate-footer {
+            background: linear-gradient(90deg, #ff89a1, #ffb970);
+            padding: 10px;
+            text-align: center;
+            color: #222;
+            font-weight: 500;
+        }
+
+        /* ========== 弹窗遮罩与弹窗 ========== */
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.65);
+            display: none;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup-box {
+            width: 86%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 14px;
+            padding: 24px;
+        }
+        .popup-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #222;
+        }
+        .popup-content {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        .popup-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+        }
+        .popup-btn {
+            padding: 8px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .copy-btn {
+            background: #795bff;
+            color: white;
+        }
+        .close-btn {
+            background: #e0e0e0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- 最左侧垂直导航按钮组 -->
+    <div class="left-nav" id="leftNav">
+        <div class="music-btn" id="musicToggle">▶</div>
+        <audio id="bgMusic" loop src="music/music.mp3"></audio>
+        <div class="nav-circle-btn active" data-target="page-home">
+            <span>🏠</span>
+            <span class="nav-label">主页</span>
+        </div>
+        <div class="nav-circle-btn" data-target="page-info">
+            <span>👤</span>
+            <span class="nav-label">经历</span>
+        </div>
+        <div class="nav-circle-btn" data-target="page-fav">
+            <span>♡</span>
+            <span class="nav-label">音乐</span>
+        </div>
+        <div class="nav-circle-btn" data-target="page-help">
+            <span>❓</span>
+            <span class="nav-label">帮助</span>
+        </div>
+        <div class="nav-circle-btn" data-target="page-donate">
+            <span>★</span>
+            <span class="nav-label">打赏</span>
+        </div>
+    </div>
+
+    <!-- 左侧悬浮个人信息卡片 -->
+    <div class="profile-card-wrap">
+        <img class="profile-avatar" src="png/头像.jpg" alt="头像">
+        <h2 class="profile-name">XY希阳</h2>
+        <p class="profile-desc">
+个人简介<br>
+一名C#,GDscript初学者<br>
+啥都沾点，啥都不精<br>
+最大的乐趣就是创作<br>
+喜欢写点东西，听听音乐<br>
+偶尔会在b站发一些视频<br>
+性格还算可以，比较好相处<br>
+很喜欢二次元
+        </p>
+        <div class="social-row">
+            <div class="social-icon" data-title="QQ账号" data-desc="QQ联系方式" data-copy="3587799475">
+                <img src="png/qq.png" alt="QQ">
+            </div>
+            <div class="social-icon" data-title="微信账号" data-desc="微信仅熟人添加" data-copy="xx08828xx">
+                <img src="png/weixin.png" alt="微信">
+            </div>
+            <div class="social-icon" data-title="邮箱地址" data-desc="商务合作邮箱" data-copy="bb2218724@163.com">
+                <img src="png/邮件.png" alt="邮箱">
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧主内容区域 -->
+    <div class="main-container">
+        <!-- 主页默认页 -->
+        <section id="page-home" class="page-section active" data-video="1">
+            <div class="content-block">
+                <div class="block-title">B站主页直达</div>
+                <a href="https://space.bilibili.com/1904044897" target="_blank" class="link-btn">进入哔哩哔哩个人主页</a>
+            </div>
+        </section>
+
+        <!-- 个人经历页面 -->
+        <section id="page-info" class="page-section" data-video="2">
+            <div class="content-block">
+                <div class="block-title">个人经历时间线</div>
+                <div class="timeline-text">
+2021年开始接触电脑软件,硬件圈<br>
+2022年1月学习C#,初次接触编程<br>
+2022年7月使用创游世界,8月成为创游世界UP主<br>
+2024年使用C#.net学习windows窗体应用<br>
+2024年9月学习PS,office等常用软件<br>
+2025年接触RVC变声器<br>
+2026年5月开始学习Godot,正在尝试很多新项目<br>
+2026年5月同时间学习Godot游戏汉化<br>
+2026年7月接触gal游戏汉化
+                </div>
+            </div>
+        </section>
+
+        <!-- 喜欢的音乐 -->
+        <section id="page-fav" class="page-section" data-video="3">
+            <div class="content-block">
+                <div class="block-title">常听曲目</div>
+                <a href="https://music.163.com/#/song?id=1487344239" target="_blank" class="link-btn">向着那亲爱的每一天</a>
+            </div>
+        </section>
+
+        <!-- 咨询&汉化业务 -->
+        <section id="page-help" class="page-section" data-video="4">
+            <div class="content-block">
+                <div class="block-title">电脑问题求助</div>
+                <p style="line-height:1.7; font-size:14px; color:#333;">
+欢迎电脑小白求助有关装机、电脑系统、电脑软件之类的基础问题，如安装硬件、电脑配置推荐、重装系统、系统疑难杂症、寻找资源等，基础问题免费咨询，稍高难度看情况0.01~1元不等，欢迎加QQ咨询~
+                </p>
+            </div>
+            <div class="content-block">
+                <div class="block-title">游戏汉化业务</div>
+                <p style="line-height:1.7; font-size:14px; color:#333;">
+会一点点游戏汉化，已汉化的项目: &lt;eye's only you&gt;,&lt;crino horror&gt;。<br>
+如果你需要汉化某个小体量游戏，可以尝试联系我，视情况决定。
+                </p>
+            </div>
+        </section>
+
+        <!-- 打赏页面 -->
+        <section id="page-donate" class="page-section" data-video="5">
+            <div class="donate-card">
+                <div class="donate-qr">
+                    <img src="png/打赏.jpg" alt="打赏二维码">
+                    <div class="donate-text">“为爱发电”</div>
+                </div>
+                <div class="donate-footer">希阳(电脑咨询,快递...的讚賞碼 ♥为爱发电♥</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 弹窗弹窗层 -->
+    <div class="mask" id="mask">
+        <div class="popup-box">
+            <h3 class="popup-title" id="popTitle"></h3>
+            <div class="popup-content" id="popContent"></div>
+            <div class="popup-btns">
+                <button class="popup-btn copy-btn" id="copyBtn">复制内容</button>
+                <button class="popup-btn close-btn" id="closeBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== 背景音乐控制 ==========
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let firstClickPlay = false;
+
+        // 首次点击页面激活音频（绕过浏览器自动播放限制）
+        document.addEventListener('click', () => {
+            if (!firstClickPlay) {
+                bgMusic.play().then(() => {
+                    musicToggle.textContent = '⏸';
+                }).catch(e => console.log("播放限制", e));
+                firstClickPlay = true;
+            }
+        }, { once: true });
+
+        // 按钮切换播放暂停
+        musicToggle.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicToggle.textContent = '⏸';
+            } else {
+                bgMusic.pause();
+                musicToggle.textContent = '▶';
+            }
+        });
+
+        // ========== 左侧导航页面切换 ==========
+        const navBtns = document.querySelectorAll('.nav-circle-btn');
+        const pages = document.querySelectorAll('.page-section');
+        const leftNav = document.getElementById('leftNav');
+        const isMobileLayout = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.matchMedia('(max-width: 900px)').matches;
+
+        if (isMobileLayout) {
+            document.body.classList.add('mobile-layout');
+        }
+
+        function activatePage(targetId) {
+            navBtns.forEach(b => b.classList.toggle('active', b.dataset.target === targetId));
+            pages.forEach(p => p.classList.toggle('active', p.id === targetId));
+        }
+
+        navBtns.forEach(btn => {
+            btn.onclick = () => {
+                const targetId = btn.dataset.target;
+                activatePage(targetId);
+                if (isMobileLayout) {
+                    const targetSection = document.getElementById(targetId);
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        })
+
+        let hideTimer = null;
+
+        function updateMobileActiveFromScroll() {
+            if (!isMobileLayout) return;
+            const scrollTop = window.scrollY + 180;
+            let currentId = 'page-home';
+            pages.forEach(section => {
+                if (scrollTop >= section.offsetTop) {
+                    currentId = section.id;
+                }
+            });
+            activatePage(currentId);
+            leftNav.classList.add('expanded');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+                leftNav.classList.remove('expanded');
+            }, 1000);
+        }
+
+        window.addEventListener('scroll', updateMobileActiveFromScroll, { passive: true });
+        window.addEventListener('resize', () => {
+            if (isMobileLayout) {
+                updateMobileActiveFromScroll();
+            }
+        });
+
+        activatePage('page-home');
+        updateMobileActiveFromScroll();
+        const popTitle = document.getElementById('popTitle');
+        const popContent = document.getElementById('popContent');
+        const copyBtn = document.getElementById('copyBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const socialIcons = document.querySelectorAll('.social-icon');
+        let copyText = '';
+
+        socialIcons.forEach(item => {
+            item.addEventListener('click', () => {
+                popTitle.innerText = item.dataset.title;
+                popContent.innerText = item.dataset.desc + "\n复制内容：" + item.dataset.copy;
+                copyText = item.dataset.copy;
+                mask.style.display = 'flex';
+            })
+        })
+
+        // 关闭弹窗
+        function closePopup() {
+            mask.style.display = 'none';
+        }
+        closeBtn.addEventListener('click', closePopup);
+        mask.addEventListener('click', e => {
+            if (e.target === mask) closePopup();
+        })
+
+        // 复制文本兼容写法
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(copyText);
+                alert('复制成功！');
+            } catch {
+                const tmp = document.createElement('input');
+                tmp.value = copyText;
+                document.body.appendChild(tmp);
+                tmp.select();
+                document.execCommand('copy');
+                document.body.removeChild(tmp);
+                alert('复制成功！');
+            }
+        })
+    </script>
+</body>
+</html>
