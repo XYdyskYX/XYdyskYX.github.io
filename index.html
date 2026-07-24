@@ -19,7 +19,7 @@
             font-family: "XQBDDZRJ", "Microsoft Yahei", cursive;
         }
 
-        /* 全局页面背景：铺满全屏、固定不滚动 */
+        /* ========== Base Layout ========== */
         body {
             min-height: 100vh;
             overflow-x: hidden;
@@ -35,8 +35,11 @@
             z-index: -1;
         }
 
-        /* ========== 左侧侧边栏音乐按钮 ========== */
+        /* ========== Components ========== */
         .music-btn {
+            position: fixed;
+            top: 16px;
+            left: 16px;
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -45,26 +48,26 @@
             color: #d94d86;
             font-size: 18px;
             cursor: pointer;
-            z-index: 998;
+            z-index: 1001;
             display: grid;
             place-items: center;
             transition: 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         }
         .music-btn:hover {
             background: #f8dce8;
             transform: none;
         }
 
-        /* ========== 最左侧垂直导航栏（固定全屏靠左） ========== */
         .left-nav {
             position: fixed;
             left: 0;
-            top: 0;
-            height: 100vh;
+            top: 88px;
+            height: calc(100vh - 88px);
             display: flex;
             flex-direction: column;
             gap: 32px;
-            padding: 48px 16px;
+            padding: 24px 16px;
             align-items: center;
             z-index: 997;
             background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
@@ -133,7 +136,7 @@
             box-shadow: none;
         }
 
-        /* ========== 左侧个人信息悬浮卡片 ========== */
+        /* ========== Profile Card ========== */
         .profile-card-wrap {
             position: fixed;
             left: 205px;
@@ -153,113 +156,6 @@
             left: 299px;
         }
 
-        @media (max-width: 900px) {
-            body.mobile-layout {
-                padding-top: 0;
-            }
-            .mobile-layout .left-nav {
-                width: 72px;
-                padding: 14px 8px;
-                gap: 14px;
-                height: 100vh;
-                max-height: none;
-                overflow-y: auto;
-                top: 0;
-                bottom: 0;
-                left: -30px;
-                transform: translateX(-100%);
-                transition: transform 0.25s ease;
-            }
-            .mobile-layout .left-nav.expanded {
-                width: 72px;
-                padding: 14px 8px;
-                left: 0;
-                transform: translateX(0);
-            }
-            .mobile-layout .nav-circle-btn {
-                width: 42px;
-                height: 42px;
-                border-radius: 12px;
-                justify-content: center;
-                gap: 0;
-                font-size: 18px;
-            }
-            .mobile-layout .left-nav.expanded .nav-circle-btn {
-                width: 56px;
-                justify-content: center;
-                gap: 0;
-                padding: 0;
-                border-radius: 12px;
-            }
-            .mobile-layout .nav-circle-btn .nav-label {
-                display: none;
-                font-size: 12px;
-                color: #fff;
-                white-space: nowrap;
-            }
-            .mobile-layout .left-nav.expanded .nav-circle-btn .nav-label {
-                display: inline-block;
-            }
-            .mobile-layout .profile-card-wrap {
-                position: relative;
-                top: auto;
-                left: auto;
-                margin: 10px 0 14px;
-                width: 100%;
-                max-width: none;
-                padding: 16px 14px;
-                transform: none;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
-            }
-            .mobile-layout .profile-avatar {
-                width: 70px;
-                height: 70px;
-                margin-bottom: 8px;
-            }
-            .mobile-layout .profile-name {
-                font-size: 18px;
-                margin-bottom: 6px;
-            }
-            .mobile-layout .profile-desc {
-                font-size: 12px;
-                line-height: 1.45;
-                margin-bottom: 10px;
-            }
-            .mobile-layout .social-row {
-                gap: 8px;
-                flex-wrap: wrap;
-            }
-            .mobile-layout .social-icon {
-                width: 30px;
-                height: 30px;
-            }
-            .mobile-layout .social-icon img {
-                width: 15px;
-                height: 15px;
-            }
-            .mobile-layout .main-container {
-                margin-left: 0;
-                padding: 0 12px 90px;
-                max-width: none;
-            }
-            .mobile-layout .page-section {
-                display: block;
-                margin-bottom: 14px;
-            }
-            .mobile-layout .page-section.active {
-                display: block;
-            }
-            .mobile-layout .page-tip {
-                right: 8px;
-                bottom: 8px;
-                font-size: 11px;
-                padding: 7px 10px;
-            }
-        }
         .profile-avatar {
             width: 110px;
             height: 110px;
@@ -307,7 +203,7 @@
             box-shadow: 0 0 8px rgba(0,0,0,0.12);
         }
 
-        /* ========== 右侧主内容区域 ========== */
+        /* ========== Main Content ========== */
         .main-container {
             margin-left: 470px;
             padding: 80px 40px;
@@ -327,7 +223,6 @@
             display: block;
         }
 
-        /* 通用内容板块样式 */
         .content-block {
             background: rgba(255,255,255,0.85);
             backdrop-filter: blur(6px);
@@ -365,7 +260,6 @@
             box-shadow: 0 0 10px rgba(160,184,255,0.3);
         }
 
-        /* 打赏卡片 */
         .donate-card {
             background: rgba(255,255,255,0.88);
             backdrop-filter: blur(8px);
@@ -394,7 +288,7 @@
             font-weight: 500;
         }
 
-        /* ========== 弹窗遮罩与弹窗 ========== */
+        /* ========== Modal ========== */
         .mask {
             position: fixed;
             top: 0;
@@ -445,13 +339,76 @@
             background: #e0e0e0;
             color: #333;
         }
+
+        /* ========== Responsive Layout ========== */
+        @media (max-width: 900px) {
+            .left-nav {
+                display: none;
+            }
+            .profile-card-wrap {
+                position: static;
+                top: auto;
+                left: auto;
+                margin: 84px 0 20px;
+                width: auto;
+                max-width: none;
+                padding: 16px 14px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+            }
+            .profile-avatar {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 8px;
+            }
+            .profile-name {
+                font-size: 18px;
+                margin-bottom: 6px;
+            }
+            .profile-desc {
+                font-size: 12px;
+                line-height: 1.45;
+                margin-bottom: 10px;
+            }
+            .social-row {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .social-icon {
+                width: 30px;
+                height: 30px;
+            }
+            .social-icon img {
+                width: 15px;
+                height: 15px;
+            }
+            .main-container {
+                margin-left: 0;
+                padding: 16px 16px 32px;
+                max-width: none;
+            }
+            .page-section,
+            .page-section.active {
+                display: block;
+            }
+            .music-btn {
+                top: 16px;
+                left: 16px;
+                width: 44px;
+                height: 44px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- 最左侧垂直导航按钮组 -->
+    <div class="music-btn" id="musicToggle">▶</div>
+    <audio id="bgMusic" loop src="music/music.mp3"></audio>
+
+    <!-- 左侧垂直导航按钮组 -->
     <div class="left-nav" id="leftNav">
-        <div class="music-btn" id="musicToggle">▶</div>
-        <audio id="bgMusic" loop src="music/music.mp3"></audio>
         <div class="nav-circle-btn active" data-target="page-home">
             <span class="nav-letter">H</span>
             <span class="nav-label">Home</span>
@@ -579,22 +536,20 @@
     </div>
 
     <script>
-        // ========== 背景音乐控制 ==========
+// ========== Audio Control ==========
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
         let firstClickPlay = false;
 
-        // 首次点击页面激活音频（绕过浏览器自动播放限制）
         document.addEventListener('click', () => {
             if (!firstClickPlay) {
                 bgMusic.play().then(() => {
                     musicToggle.textContent = '⏸';
-                }).catch(e => console.log("播放限制", e));
+                }).catch(e => console.log('播放限制', e));
                 firstClickPlay = true;
             }
         }, { once: true });
 
-        // 按钮切换播放暂停
         musicToggle.addEventListener('click', () => {
             if (bgMusic.paused) {
                 bgMusic.play();
@@ -608,57 +563,20 @@
         // ========== 左侧导航页面切换 ==========
         const navBtns = document.querySelectorAll('.nav-circle-btn');
         const pages = document.querySelectorAll('.page-section');
-        const leftNav = document.getElementById('leftNav');
-        const isMobileLayout = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.matchMedia('(max-width: 900px)').matches;
-
-        if (isMobileLayout) {
-            document.body.classList.add('mobile-layout');
-        }
 
         function activatePage(targetId) {
-            navBtns.forEach(b => b.classList.toggle('active', b.dataset.target === targetId));
-            pages.forEach(p => p.classList.toggle('active', p.id === targetId));
+            navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.target === targetId));
+            pages.forEach(page => page.classList.toggle('active', page.id === targetId));
         }
 
         navBtns.forEach(btn => {
             btn.onclick = () => {
-                const targetId = btn.dataset.target;
-                activatePage(targetId);
-                if (isMobileLayout) {
-                    const targetSection = document.getElementById(targetId);
-                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
-        })
-
-        let hideTimer = null;
-
-        function updateMobileActiveFromScroll() {
-            if (!isMobileLayout) return;
-            const scrollTop = window.scrollY + 180;
-            let currentId = 'page-home';
-            pages.forEach(section => {
-                if (scrollTop >= section.offsetTop) {
-                    currentId = section.id;
-                }
-            });
-            activatePage(currentId);
-            leftNav.classList.add('expanded');
-            clearTimeout(hideTimer);
-            hideTimer = setTimeout(() => {
-                leftNav.classList.remove('expanded');
-            }, 1000);
-        }
-
-        window.addEventListener('scroll', updateMobileActiveFromScroll, { passive: true });
-        window.addEventListener('resize', () => {
-            if (isMobileLayout) {
-                updateMobileActiveFromScroll();
-            }
+                activatePage(btn.dataset.target);
+            };
         });
 
         activatePage('page-home');
-        updateMobileActiveFromScroll();
+        const mask = document.getElementById('mask');
         const popTitle = document.getElementById('popTitle');
         const popContent = document.getElementById('popContent');
         const copyBtn = document.getElementById('copyBtn');
@@ -669,22 +587,21 @@
         socialIcons.forEach(item => {
             item.addEventListener('click', () => {
                 popTitle.innerText = item.dataset.title;
-                popContent.innerText = item.dataset.desc + "\n复制内容：" + item.dataset.copy;
+                popContent.innerText = item.dataset.desc + '\n复制内容：' + item.dataset.copy;
                 copyText = item.dataset.copy;
                 mask.style.display = 'flex';
-            })
-        })
+            });
+        });
 
-        // 关闭弹窗
         function closePopup() {
             mask.style.display = 'none';
         }
+
         closeBtn.addEventListener('click', closePopup);
         mask.addEventListener('click', e => {
             if (e.target === mask) closePopup();
-        })
+        });
 
-        // 复制文本兼容写法
         copyBtn.addEventListener('click', async () => {
             try {
                 await navigator.clipboard.writeText(copyText);
@@ -698,7 +615,7 @@
                 document.body.removeChild(tmp);
                 alert('复制成功！');
             }
-        })
+        });
     </script>
 </body>
 </html>
